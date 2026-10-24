@@ -1290,6 +1290,10 @@ static void gb_scene_load(uint32_t s)
         pat_sig[i] = steps_sig(t);            /* a default pattern, not the user's */
         pat_last[i] = p[2];
         t->p[P_SDIV] = 1;                     /* 1/8, a slow scene */
+        if (p[3])
+            t->p[P_LEVEL] = p[3];             /* FIENDBOX: the scene's mix (0 = the sound's own) */
+        if (p[4])
+            t->p[P_REV] = p[4];
     }
     undo_depth--;
     song.sel = 0;

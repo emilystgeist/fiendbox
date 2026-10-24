@@ -226,6 +226,15 @@ static const struct {
     /* GHOULBOX 1.2: for the DRUM engine's CRYPT kit (GM notes: its FRAME, SHAKR, TIMP, ROPE, SLAP lanes) */
     {"TOMBBEAT", {36, 42, 0, 42, 45, 42, 36, 42, 36, 42, 45, 45, 38, 42, 39, 42},       /* 22 a procession */
      {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}},
+    /* FIENDBOX: LABYRINTH's patterns, A minor over Am F G E, appended (23..26) */
+    {"CRAWL", {33, 0, 33, 45, 33, 0, 36, 0, 33, 0, 33, 45, 31, 0, 29, 0},          /* 23 a grinding bass */
+     {1, 0, 0, 2, 0, 0, 1, 0, 1, 0, 0, 2, 0, 0, 1, 0}},
+    {"DREAD", {57, 0, 0, 0, 53, 0, 0, 0, 55, 0, 0, 0, 52, 0, 0, 0},                /* 24 the pad's roots */
+     {0, T_, T_, T_, 0, T_, T_, T_, 0, T_, T_, T_, 0, T_, T_, T_}},
+    {"SIREN", {76, 0, 0, 75, 0, 0, 72, 0, 0, 0, 69, 0, 0, 0, 0, 0},                /* 25 a thin lead */
+     {1, T_, 0, 2, T_, 0, 1, T_, 0, 0, 1, T_, T_, 0, 0, 0}},
+    {"RUSTBEAT", {36, 0, 42, 0, 38, 0, 42, 36, 36, 0, 42, 0, 38, 0, 36, 0},        /* 26 a hard kick and snare */
+     {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0}},
 };
 #undef T_
 #define NPATTERNS (sizeof PATTERNS / sizeof PATTERNS[0])
@@ -237,17 +246,18 @@ static const uint8_t TRK_DEF[NPART][3] = {{0, 4, 0}, {ENGI_FM6, 4, 0}, {3, 0, 0}
  * minor, 1/8 steps, HALL (ui.c gb_scene_load). 1.3: MENU > SYSTEM > SCENE picks one (ui_scene; append-only: a saved
  * value keeps its scene, an unknown one plays DUNGEON). The patterns are the dungeon nine (PATTERNS[n - 1]) */
 #define GB_NSCENE 5u
-static const struct { const char *name; uint8_t bpm, tape, part[NPART][3]; } GB_SCENES[GB_NSCENE] = {
-    {"DUNGEON", 72, 40, {{ENGI_GURDY, 0, 15}, {0, 12, 14}, {5, 4, 16}, {ENGI_GURDY, 1, 17}}},   /* HURDY GURDY BALLAD,
-                                    * CRYPT PAD DIRGE, MONKS CHANT, DRONE WHEEL PEDAL: the scene up to 1.2 */
-    {"CRYPT", 60, 55, {{5, 7, 17}, {5, 5, 14}, {11, 4, 17}, {ENGI_DRUM, 2, 22}}},              /* LOW DRONE PEDAL,
-                                    * CRYPT CHOIR DIRGE, CAVE WIND PEDAL, TOMB DRUMS TOMBBEAT */
-    {"TAVERN", 96, 30, {{ENGI_GURDY, 2, 15}, {ENGI_PHYS, 11, 20}, {ENGI_PHYS, 9, 18}, {ENGI_DRUM, 1, 22}}},   /* DANCE
-                                    * GURDY BALLAD, DUNGEON HARP ARPEGGIO, LUTE MARCH, CRYPT KIT TOMBBEAT */
-    {"CHAPEL", 66, 40, {{7, 6, 14}, {5, 4, 16}, {ENGI_SAMPLE, 7, 19}, {ENGI_GURDY, 4, 21}}},     /* CATHEDRAL DIRGE,
-                                    * MONKS CHANT, TENOR RECORD LAMENT, VIELLE ANTIPHON */
-    {"BLANK", 72, 40, {{ENGI_GURDY, 0, 0}, {0, 12, 0}, {5, 4, 0}, {ENGI_GURDY, 1, 0}}},         /* DUNGEON's sounds, no
-                                    * notes: a clean start */
+static const struct { const char *name; uint8_t bpm, tape, part[NPART][5]; } GB_SCENES[GB_NSCENE] = {
+    /* a part: {engine, sound, pattern (PATTERNS[n - 1], 0 = none), level, reverb send}; 0 = the sound's own */
+    {"LABYRINTH", 90, 30, {{0, 2, 23, 0, 0}, {ENGI_FM6, 11, 24, 70, 0}, {2, 5, 25, 80, 0}, {ENGI_DRUM, 0, 26, 0, 20}}},
+                                    /* SQR BASS CRAWL, DARK STRINGS DREAD, WIRE SIREN, DRUM KIT RUSTBEAT: A minor */
+    {"RUINS", 44, 55, {{5, 7, 17, 0, 0}, {7, 5, 14, 70, 0}, {ENGI_FM6, 1, 21, 60, 0}, {11, 4, 17, 0, 0}}},
+                                    /* LOW DRONE PEDAL, CRYPT ORGAN DIRGE, BELL ANTIPHON, CAVE WIND PEDAL */
+    {"SHRINE", 48, 50, {{ENGI_FM6, 13, 17, 0, 0}, {8, 2, 14, 0, 0}, {ENGI_SAMPLE, 5, 19, 0, 0}, {ENGI_SAMPLE, 2, 21, 0, 0}}},
+                                    /* PIPE ORGAN PEDAL, FROZEN DIRGE, BOWED PSALT LAMENT, FLUTE ANTIPHON */
+    {"GOTHIC", 66, 40, {{ENGI_FM6, 9, 20, 0, 0}, {ENGI_FM6, 13, 14, 0, 0}, {7, 7, 19, 0, 0}, {5, 7, 17, 0, 0}}},
+                                    /* VIRGINAL ARPEGGIO, PIPE ORGAN DIRGE, HARMONIUM LAMENT, LOW DRONE PEDAL */
+    {"BLANK", 90, 30, {{0, 2, 0, 0, 0}, {ENGI_FM6, 11, 0, 70, 0}, {2, 5, 0, 80, 0}, {ENGI_DRUM, 0, 0, 0, 20}}},
+                                    /* LABYRINTH's sounds, no notes: a clean start */
 };
 #define GB_SCENE (GB_SCENES[0].part)   /* (the scene up to 1.2: tests/descdump.c, tests/ghoulbox_shots.c) */
 static uint32_t trk_def_engine(uint32_t i) { return TRK_DEF[i % NPART][0]; }
