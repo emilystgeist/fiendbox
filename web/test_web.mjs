@@ -37,7 +37,7 @@ const proto = html.slice(html.indexOf("/*PROTO-BEGIN*/"), html.indexOf("/*PROTO-
 const E = vm.runInNewContext(proto + `
 ;({ frame, unframe, parse, req, Link, parseWav, resample, normalize, takeSample, autoTrim, zoomView, rootFromName, buildSlot, makeMockDevice, CMD, SMP,
    UP, bank, capturePatch, auditionPatch, startWatch, libraryFile, readLibraryFile, paramKeys, patternFromSteps, stepsFromPattern, upName,
-   mixer, parseNotes, parseHits, hitsText, gridFromSteps, LANE_NOTE, LANE_OF, readDevicePreferences, devicePresetRows, engineOrder, ENGINE_ORDER, ENGINE_HIDDEN, PRESET_HIDDEN, aliasOf, fmtValue, FM6, enumShown, F,
+   mixer, parseNotes, parseHits, hitsText, gridFromSteps, LANE_NOTE, LANE_OF, drumLane, readDevicePreferences, devicePresetRows, engineOrder, ENGINE_ORDER, ENGINE_HIDDEN, PRESET_HIDDEN, aliasOf, fmtValue, FM6, enumShown, F,
    FM4, fromDigital, fromPerc, DRUM_KIT_E,
    MENU: typeof MENU === "undefined" ? null : MENU, MENU_TABS: typeof MENU_TABS === "undefined" ? null : MENU_TABS,
    readDeviceMenu: typeof readDeviceMenu === "undefined" ? null : readDeviceMenu,
@@ -413,8 +413,13 @@ function mockTables() {
   const m2 = E.makeMockDevice({ auto: false });   /* the mock's power-on scene (GHOULBOX: main.c felucca_init) */
   cmp("power-on sounds", m2.state.tracks.map((t) => [t.engine, t.preset]), fw.GB_SCENE.map((x) => x.slice(0, 2)));
   fw.GB_SCENE.forEach((x, k) => {
-    if (x[2]) cmp(`power-on pattern of track ${k + 1}`, m2.state.tracks[k].step.slice(0, 16).map((s) => (s.n ? s.notes[0] : 0)),
-      fw.PATTERNS[x[2] - 1][0]);
+    if (!x[2]) return;
+    const steps = m2.state.tracks[k].step.slice(0, 16);
+    if (fw.ENG[x[0]].name === "DRUM")   /* a DRUM track keeps its steps as a lane grid (eng_drum.c step_to_grid): compare lanes */
+      cmp(`power-on pattern of track ${k + 1} (drum lanes)`, steps.map((s) => (s.time === 0 ? s.hit : 0)),
+        fw.PATTERNS[x[2] - 1][0].map((n) => (n ? 1 << E.drumLane(n) : 0)));
+    else
+      cmp(`power-on pattern of track ${k + 1}`, steps.map((s) => (s.n ? s.notes[0] : 0)), fw.PATTERNS[x[2] - 1][0]);
   });
   m2.stop();
   cmp("firmware: G_ENGSEL names == engine names", fw.GP[fw.G_ENGSEL].names, fw.ENG.map((e) => e.name));

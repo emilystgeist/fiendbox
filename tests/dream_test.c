@@ -85,10 +85,10 @@ int main(void)
     int bad = 0, ok;
     uint32_t i, k, sc, m, d;
     static const uint8_t ROLES[4][4] = {
-        {DR_MELODY, DR_PAD, DR_PAD, DR_DRONE},         /* DUNGEON: HURDY GURDY, CRYPT PAD, MONKS, DRONE WHEEL */
-        {DR_DRONE, DR_PAD, DR_DRONE, DR_PERC},         /* CRYPT: LOW DRONE, CRYPT CHOIR, CAVE WIND, TOMB DRUMS */
-        {DR_MELODY, DR_ARP, DR_ARP, DR_PERC},          /* TAVERN: DANCE GURDY, DUNGEON HARP, LUTE, CRYPT KIT */
-        {DR_PAD, DR_PAD, DR_MELODY, DR_HIGH},          /* CHAPEL: CATHEDRAL, MONKS, TENOR RECORD, VIELLE (2nd melody) */
+        {DR_BASS, DR_PAD, DR_MELODY, DR_PERC},         /* LABYRINTH: SQR BASS, DARK STRINGS, WIRE, DRUM KIT */
+        {DR_DRONE, DR_PAD, DR_ARP, DR_DRONE},          /* RUINS: LOW DRONE, CRYPT ORGAN, BELL, CAVE WIND */
+        {DR_PAD, DR_PAD, DR_PAD, DR_MELODY},           /* SHRINE: PIPE ORGAN, FROZEN, BOWED PSALT, FLUTE */
+        {DR_ARP, DR_PAD, DR_PAD, DR_DRONE},            /* GOTHIC: VIRGINAL, PIPE ORGAN, HARMONIUM, LOW DRONE */
     };
 
     /* 1 */
@@ -148,13 +148,19 @@ int main(void)
     {
         uint32_t lo = 0, hi = 0;
         for (k = 0; k < 8u; k++) {
-            scene(2);
-            song.g[G_DDENS] = 1; dream_compose(2); lo += notes_of(&trk[1]) + notes_of(&trk[0]);
-            scene(2);
-            song.g[G_DDENS] = 8; dream_compose(2); hi += notes_of(&trk[1]) + notes_of(&trk[0]);
+                for (sc = 0; sc < 4u; sc++) {                  /* every arp and melody part of the four scenes */
+                scene(sc);
+                song.g[G_DDENS] = 1; dream_compose(2);
+                for (i = 0; i < NTRK; i++)
+                    lo += (dream.role[i] == DR_ARP || dream.role[i] == DR_MELODY) ? notes_of(&trk[i]) : 0u;
+                scene(sc);
+                song.g[G_DDENS] = 8; dream_compose(2);
+                for (i = 0; i < NTRK; i++)
+                    hi += (dream.role[i] == DR_ARP || dream.role[i] == DR_MELODY) ? notes_of(&trk[i]) : 0u;
+            }
         }
         bad += check("DENS: the arp and the melody play more at 8 than at 1", hi > lo * 3u / 2u);
-        printf("        (TAVERN's harp and gurdy: %u notes at DENS 1, %u at 8, over 8 pieces)\n", lo, hi);
+        printf("        (the arp and melody parts: %u notes at DENS 1, %u at 8, over 8 rounds of 4 scenes)\n", lo, hi);
     }
 
     /* 5 */
@@ -257,12 +263,12 @@ int main(void)
          * load forgets the dream too */
         project_t q;
         uint32_t pass;
-        scene(1);                                      /* project A: CRYPT's sounds dreamed in A Phrygian */
+        scene(1);                                      /* project A: RUINS' sounds dreamed in A Phrygian */
         song.g[G_DMOOD] = 2;
         rng_state = 99;
         dream_compose(9);
         project_capture(&q);
-        scene(0);                                      /* then a dream in D on DUNGEON's sounds */
+        scene(0);                                      /* then a dream in D on LABYRINTH's sounds */
         song.g[G_DMOOD] = 0;
         dream_compose(2);
         ok = dream.valid && dream.root == 2u;
@@ -273,7 +279,7 @@ int main(void)
             trk[0].seq_idx = 40; dream_tick(); trk[0].seq_idx = 0; dream_tick();
         }
         ok &= dream.valid && dream.root == 9u && dream.scl == DR_MOOD_SCL[2] && dream.role[0] == DR_DRONE &&
-              dream.role[3] == DR_PERC && piece_ok("A after load");
+              dream.role[3] == DR_DRONE && piece_ok("A after load");
         song.playing = 0;
         scene(0);
         dream_compose(2);

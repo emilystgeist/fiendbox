@@ -5080,8 +5080,8 @@ static int test_fm4_retired(void)
     bad += check("power-on: track 2 is FM6 PAD (TRK_DEF, was DIGITAL PAD)", trk[1].eng_req == ENGI_FM6 &&
                  str_eq(ENGINES[ENGI_FM6]->presets[trk[1].preset].name, "PAD"));
     {   /* GHOULBOX: felucca_init's scene, by name (a preset inserted before these would swap the sound) */
-        static const char *const want[NPART][3] = {{"GURDY", "HURDY GURDY", "BALLAD"}, {"ANALOG", "CRYPT PAD", "DIRGE"},
-                                                    {"VOICE", "MONKS", "CHANT"}, {"GURDY", "DRONE WHEEL", "PEDAL"}};
+        static const char *const want[NPART][3] = {{"ANALOG", "SQR BASS", "CRAWL"}, {"FM6", "DARK STRINGS", "DREAD"},
+                                                    {"PHASE", "WIRE", "SIREN"}, {"DRUM", "DRUM KIT", "RUSTBEAT"}};
         int sc = 1;
         for (i = 0; i < NPART; i++) {
             const engine_t *en = ENGINES[GB_SCENE[i][0]];
@@ -5089,7 +5089,7 @@ static int test_fm4_retired(void)
                   str_eq(en->presets[GB_SCENE[i][1]].name, want[i][1]) &&
                   GB_SCENE[i][2] >= 1u && GB_SCENE[i][2] <= NPATTERNS && str_eq(PATTERNS[GB_SCENE[i][2] - 1u].name, want[i][2]);
         }
-        bad += check("power-on (GHOULBOX): HURDY GURDY on BALLAD, CRYPT PAD on DIRGE, MONKS on CHANT, DRONE WHEEL on PEDAL", sc);
+        bad += check("power-on (FIENDBOX): SQR BASS on CRAWL, DARK STRINGS on DREAD, WIRE on SIREN, DRUM KIT on RUSTBEAT", sc);
     }
     preset_all_pos(&total);
     for (i = 0; i < total; i++) {
@@ -9560,11 +9560,14 @@ static int test_hidden_presets(void)
                          c2 < ENGINES[ENGI_DRUM]->npresets && t2 < ENGINES[ENGI_DRUM]->npresets &&
                          !preset_hidden(ENGINES[ENGI_DRUM], c2) && !preset_hidden(ENGINES[ENGI_DRUM], t2) &&
                          ENGINES[ENGI_DRUM]->presets[c2].e[0] == DK_CRYPT && ENGINES[ENGI_DRUM]->presets[c2].pat == 22u &&
-                         NPATTERNS == 22u && str_eq(PATTERNS[21].name, "TOMBBEAT"));
+                         NPATTERNS == 26u && str_eq(PATTERNS[21].name, "TOMBBEAT"));
         }
         bad += check("1.2: patterns 18..21 MARCH LAMENT ARPEGGIO ANTIPHON, after 1.0's (none renumbered)", NPATTERNS >= 21u &&
                      str_eq(PATTERNS[13].name, "DIRGE") && str_eq(PATTERNS[16].name, "PEDAL") && str_eq(PATTERNS[17].name, "MARCH") &&
                      str_eq(PATTERNS[18].name, "LAMENT") && str_eq(PATTERNS[19].name, "ARPEGGIO") && str_eq(PATTERNS[20].name, "ANTIPHON"));
+        bad += check("FIENDBOX: patterns 23..26 CRAWL DREAD SIREN RUSTBEAT, after 1.2's (none renumbered)", NPATTERNS == 26u &&
+                     str_eq(PATTERNS[22].name, "CRAWL") && str_eq(PATTERNS[23].name, "DREAD") &&
+                     str_eq(PATTERNS[24].name, "SIREN") && str_eq(PATTERNS[25].name, "RUSTBEAT"));
         bad += check("1.1: the SET knob never stops on an alias (1, 4)", param_turn(sd, 3, 1) == 3 && param_turn(sd, 3, 2) == 3 &&
                      param_turn(sd, 0, 1) == 2 && param_turn(sd, 2, -1) == 0);
     }
@@ -9624,17 +9627,17 @@ static int test_sample_values(void)
 static int test_scenes(void)
 {
     static const char *const WANT[GB_NSCENE][NTRK] = {
-        {"HURDY GURDY", "CRYPT PAD", "MONKS", "DRONE WHEEL"},
-        {"LOW DRONE", "CRYPT CHOIR", "CAVE WIND", "TOMB DRUMS"},
-        {"DANCE GURDY", "DUNGEON HARP", "LUTE", "CRYPT KIT"},
-        {"CATHEDRAL", "MONKS", "TENOR RECORD", "VIELLE"},
-        {"HURDY GURDY", "CRYPT PAD", "MONKS", "DRONE WHEEL"},
+        {"SQR BASS", "DARK STRINGS", "WIRE", "DRUM KIT"},
+        {"LOW DRONE", "CRYPT ORGAN", "BELL", "CAVE WIND"},
+        {"PIPE ORGAN", "FROZEN", "BOWED PSALT", "FLUTE"},
+        {"VIRGINAL", "PIPE ORGAN", "HARMONIUM", "LOW DRONE"},
+        {"SQR BASS", "DARK STRINGS", "WIRE", "DRUM KIT"},
     };
     static const char *const PAT[GB_NSCENE][NTRK] = {
-        {"BALLAD", "DIRGE", "CHANT", "PEDAL"}, {"PEDAL", "DIRGE", "PEDAL", "TOMBBEAT"},
-        {"BALLAD", "ARPEGGIO", "MARCH", "TOMBBEAT"}, {"DIRGE", "CHANT", "LAMENT", "ANTIPHON"}, {0, 0, 0, 0},
+        {"CRAWL", "DREAD", "SIREN", "RUSTBEAT"}, {"PEDAL", "DIRGE", "ANTIPHON", "PEDAL"},
+        {"PEDAL", "DIRGE", "LAMENT", "ANTIPHON"}, {"ARPEGGIO", "DIRGE", "LAMENT", "PEDAL"}, {0, 0, 0, 0},
     };
-    static const int16_t BPM[GB_NSCENE] = {72, 60, 96, 66, 72};
+    static const int16_t BPM[GB_NSCENE] = {90, 44, 48, 66, 90};
     int bad = 0, ok = 1;
     uint32_t s, i, k, row = MI_SCENE;
     for (s = 0; s < GB_NSCENE; s++) {
@@ -9652,11 +9655,15 @@ static int test_scenes(void)
                     ok &= !t->step[k].n && !t->step[k].hit;
         }
     }
-    bad += check("1.3 SCENE: DUNGEON CRYPT TAVERN CHAPEL BLANK load their sounds, patterns (BLANK: none), tempo, HALL", ok);
+    bad += check("1.3 SCENE: LABYRINTH RUINS SHRINE GOTHIC BLANK load their sounds, patterns (BLANK: none), tempo, HALL", ok);
+    ui_power_on();
+    gb_scene_load(0);
+    bad += check("FIENDBOX SCENE: LABYRINTH's mix (strings 70, lead 80, drum send 20; 0 = the sound's own)",
+                 trk[1].p[P_LEVEL] == 70 && trk[2].p[P_LEVEL] == 80 && trk[3].p[P_REV] == 20);
     ui_power_on();
     ok = MI_TAB[row] == MTAB_SYSTEM && MI_TAB[row + 1u] == MTAB_SYSTEM && row + 1u == MI_SERIAL &&
          menu_n(row) == GB_NSCENE && str_eq(MI_NAME[row], "SCENE") && menu_get(row) == 0 &&
-         str_eq(menu_vname(row, 0), "DUNGEON") && str_eq(menu_vname(row, 4), "BLANK");
+         str_eq(menu_vname(row, 0), "LABYRINTH") && str_eq(menu_vname(row, 4), "BLANK");
     menu_put(row, 2);
     ok &= menu_get(row) == 2 && ui_scene == 2 && menu_step(row, 1) == 3 && menu_step(row, -1) == 1;
     menu_put(row, 4);
@@ -9664,8 +9671,8 @@ static int test_scenes(void)
     ui_scene = 200;                                            /* a value from a later version: DUNGEON */
     ok &= menu_get(row) == 0;
     gb_scene_load(ui_scene);
-    ok &= !strcmp(ENGINES[trk[0].engine]->presets[trk[0].preset].name, "HURDY GURDY") && song.g[G_BPM] == 72;
-    bad += check("1.3 SCENE: MENU > SYSTEM row (5 names, stops at the ends); a later version's value plays DUNGEON", ok);
+    ok &= !strcmp(ENGINES[trk[0].engine]->presets[trk[0].preset].name, "SQR BASS") && song.g[G_BPM] == 90;
+    bad += check("1.3 SCENE: MENU > SYSTEM row (5 names, stops at the ends); a later version's value plays LABYRINTH", ok);
     {   /* the row redraws at once when its value changes (ui_menu.c: the menu signature holds ui_scene) */
         static uint16_t before[240 * 240];
         ui_power_on();
