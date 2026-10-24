@@ -1415,18 +1415,19 @@ static void draw(int s)
                                                    * shown FELUCCA_VERSION (run_tests.sh: src/felucca.c's) */
         /* GHOULBOX: its own splash (ui_draw.c draw_splash): the skull (rows 34 ..) and the wordmark (100 ..) inked, then
          * DUNGEON SYNTH the only text */
-        static const char WANT[] = "DUNGEON SYNTH";
+        static const char WANT[] = "DEMON SYNTH";
         splash_seen[0] = 0;
         in_splash = 1;
         draw_splash();
         in_splash = 0;
         {
             uint16_t bg = host_screen[0];
-            uint32_t sk = 0, lg = 0, i;
-            for (i = 34u * 240u; i < (34u + GB_SKULL_H) * 240u; i++) sk += host_screen[i] != bg;
-            for (i = 100u * 240u; i < (100u + GB_LOGO_H) * 240u; i++) lg += host_screen[i] != bg;
-            if (sk < 200u || lg < 200u) {
-                if (rep) fprintf(rep, "FIND %-26s the splash's skull (%u px) or wordmark (%u px) missing\n", cur_name, sk, lg);
+            uint32_t sk = 0, lg = 0, sg = 0, i;
+            for (i = 38u * 240u; i < (38u + GB_IMP_H) * 240u; i++) sk += host_screen[i] != bg;      /* the imp's rows */
+            for (i = 0; i < 20u * 240u; i++) sg += host_screen[i] != bg;                              /* the circle's top */
+            for (i = 150u * 240u; i < (150u + GB_LOGO_H) * 240u; i++) lg += host_screen[i] != bg;
+            if (sk < 200u || lg < 200u || sg < 50u) {
+                if (rep) fprintf(rep, "FIND %-26s the splash's imp (%u px), wordmark (%u px) or circle (%u px) missing\n", cur_name, sk, lg, sg);
                 nfind++;
             }
         }

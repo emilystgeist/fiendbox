@@ -51,9 +51,19 @@ int main(int argc, char **argv)
     rep = fopen("/dev/null", "w");                 /* (ui_render's lint hooks report here) */
     pal(UI_FIEND_INDEX);
     lcd_fill(0, 0, 240, 240, T_BG);                /* the boot splash, as main.c fm1_main draws it */
-    draw_art_box(34, GB_SKULL_W, GB_SKULL_H, GB_SKULL, T_TEXT);
-    draw_art_box(100, GB_LOGO_W, GB_LOGO_H, GB_LOGO, T_THEME);
-    draw_text_box(0, 166, 240, &AF_S, "DUNGEON SYNTH", T_MID, 1);
+    {   /* FIENDBOX: two canvases of 240 x 120 (CV_MAX), the three pieces layered on each (a clear pixel is skipped) */
+        uint32_t half;
+        for (half = 0; half < 240u; half += 120u) {
+            cv_begin(240, 120, T_BG);
+            cv_oy = -(int32_t)half;
+            cv_alpha_hc((240 - (int32_t)GB_SIGIL_W) / 2, 0, GB_SIGIL_W, GB_SIGIL_H, GB_SIGIL, GB_HC, ramp(T_ACCENT, T_BG));   /* the circle, */
+            cv_alpha_hc((240 - (int32_t)GB_IMP_W) / 2, 38, GB_IMP_W, GB_IMP_H, GB_IMP, GB_HC, ramp(T_TEXT, T_BG));            /* the imp in it, */
+            cv_alpha_hc((240 - (int32_t)GB_LOGO_W) / 2, 150, GB_LOGO_W, GB_LOGO_H, GB_LOGO, GB_HC, ramp(T_THEME, T_BG));      /* the wordmark over its cloak */
+            cv_oy = 0;
+            cv_blit(0, half);
+        }
+    }
+    draw_text_box(0, 214, 240, &AF_S, "DEMON SYNTH", T_MID, 1);
     write_ppm(dir, "CRYPT", "boot");
     gb_scene(); ui.home = 1; shot(dir, "home");
     gb_scene(); go_page(GR_BROWSE); shot(dir, "presets");
