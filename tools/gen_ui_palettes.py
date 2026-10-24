@@ -51,6 +51,9 @@ PALETTES = [
     ("NIGHT",  (0, 0, 0),       (0, 24, 10),     (150, 230, 170), (56, 220, 100),  (255, 255, 255)),
     # 1.0.2: black and white (the derived tokens are set, not blended: bw()); the old MONO is GREY (id 0)
     ("MONO",   (0, 0, 0),       (0, 0, 0),       (255, 255, 255), (255, 255, 255), (255, 255, 255)),
+    # FIENDBOX: appended (saved ids are indices: append only). Cold neon: near-black blue,
+    # icy text, cyan values, crimson for the one active thing
+    ("FIEND",  (6, 8, 16),      (18, 22, 40),    (214, 232, 240), (0, 200, 220),   (255, 40, 90)),
 ]
 BW = "MONO"
 BW_GREY = (82, 82, 82)             # MONO's one mid grey (RGB565 10/20/10): DIM LINE RAISE LANE
@@ -189,6 +192,7 @@ def main():
         crypt = [p[0] for p in PALETTES].index("CRYPT")
         out += ["};", f"#define UI_NPALETTES {len(PALETTES)}u", "#define UI_GREY_INDEX 0u",
                 f"#define UI_CRYPT_INDEX {crypt}u   /* GHOULBOX: a fresh device's palette */",
+                f"#define UI_FIEND_INDEX {names.index('FIEND')}u   /* FIENDBOX: a fresh device's palette */",
                 f"#define UI_BW_INDEX {names.index(BW)}u          /* MONO: black and white (src/gfx.c palette_set) */",
                 f"#define UI_BW_GREY 0x{to565(BW_GREY):04x}u          /* MONO's one grey: DIM LINE RAISE LANE */",
                 f"#define UI_PAL_TAG {PAL_TAG}u          /* stored id = UI_PAL_TAG + index; below 20: an old id */"]
