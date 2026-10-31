@@ -2183,6 +2183,7 @@ static void torch_tick(void)                          /* only the two torch rect
 }
 
 #include "ui_fiends.c"                              /* FIENDBOX: the familiars (adapted from JIANT's beings) */
+#include "ui_coven.c"                               /* FIENDBOX: the coven on HOME (adapted from JIANT's ecosystem) */
 
 static void draw_graph(void)
 {
@@ -2227,7 +2228,10 @@ static void draw_graph(void)
         graph_ht = 100;
     } else if (ui.home) {
         cv_oy = 0;
-        graph_scope(c);
+        if (home_coven())
+            graph_coven();                           /* FIENDBOX: the coven (MENU > DISPLAY > HOME) */
+        else
+            graph_scope(c);
     } else {
         switch (pg->graph) {
         case GR_ADSR:

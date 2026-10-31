@@ -47,7 +47,7 @@ static const menu_credit_t MENU_CREDITS[] = {
     {"", MC_TEXT},
     {"JIANT FM", MC_TITLE},
     {"Juan Ignacio Antonucci (Juan Jiant)", MC_TEXT},
-    {"The familiars: GPL-3.0-only", MC_TEXT},
+    {"The familiars and the coven: GPL-3.0-only", MC_TEXT},
     {"https://github.com/juanjiant-bit/JIANT", MC_URL},
     {"", MC_TEXT},
     {"H\xFCgelton Instruments", MC_TITLE},  /* Felucca's own: above; these are ours too */

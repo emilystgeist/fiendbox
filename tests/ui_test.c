@@ -9055,9 +9055,9 @@ static int test_home_tracks(void)
     int16_t v0;
     ui_power_on();
     memcpy(before, favorites.factory[15], 32);
-    ok = ui_home_view == 0u && !home_tracks() && menu_get(MI_HOME) == 0u && menu_n(MI_HOME) == 2u &&
+    ok = ui_home_view == 0u && !home_tracks() && menu_get(MI_HOME) == 0u && menu_n(MI_HOME) == 3u &&
          str_eq(MI_NAME[MI_HOME], "HOME") && str_eq(menu_vname(MI_HOME, 0), "SCOPE") &&
-         str_eq(menu_vname(MI_HOME, 1), "TRACKS") && MI_TAB[MI_HOME] == MTAB_DISPLAY && MI_HOME < MI_VALUES;
+         str_eq(menu_vname(MI_HOME, 1), "TRACKS") && str_eq(menu_vname(MI_HOME, 2), "COVEN") && MI_TAB[MI_HOME] == MTAB_DISPLAY && MI_HOME < MI_VALUES;
     menu_put(MI_HOME, 1);
     ok &= ui_home_view == 1u && home_tracks() && menu_get(MI_HOME) == 1u;
     for (i = 0; i < 32u; i++)                           /* (byte 26 only: SCREEN OFF, the 1.2 flags, the FX keys kept) */
@@ -9078,12 +9078,35 @@ static int test_home_tracks(void)
     for (i = 0; i < 7u; i++) turn(EN_PRESET, 1);
     ok = ui.menu == 1 && ui.menu_sel == MI_HOME;
     turn(EN_K1, 1); ok &= home_tracks();
-    turn(EN_K3, 1); ok &= home_tracks();               /* (stops at TRACKS) */
-    press(B_OCTDN); ok &= !home_tracks();
+    turn(EN_K3, 1); ok &= home_coven();                /* FIENDBOX: on to the third view */
+    turn(EN_K3, 1); ok &= home_coven();                /* (stops at COVEN) */
+    press(B_OCTDN); ok &= home_tracks();
+    press(B_OCTDN); ok &= !home_tracks() && !home_coven();
     press(B_OCTUP); ok &= home_tracks();
     press(B_HOME); frame();
     ok &= !ui.menu && ui.home;
     bad += check("1.3 MENU: HOME's row (any knob, OCT+ / OCT-), the menu closed: HOME", ok);
+
+    ui_power_on();                                      /* FIENDBOX: the third view, the coven: chosen, saved, drawn */
+    menu_put(MI_HOME, 2);
+    ok = ui_home_view == 2u && home_coven() && !home_tracks() && menu_get(MI_HOME) == 2u;
+    memset(&p, 0, sizeof p);
+    settings_export(&p);
+    ok &= p.favorites.factory[15][26] == 2u;
+    menu_put(MI_HOME, 0);
+    ok &= settings_import(&p, (int)sizeof p) == 1 && ui_home_view == 2u;   /* (back from the record) */
+    bad += check("FIENDBOX: MENU > DISPLAY > HOME COVEN (2), saved in the same byte", ok);
+    {
+        static uint16_t scope_px[240 * 240];
+        ui_power_on();
+        ui_home_view = HV_SCOPE;
+        ui.force = 1; ui_draw();
+        memcpy(scope_px, host_screen, sizeof scope_px);
+        ui_home_view = HV_COVEN;
+        ui.force = 1; ui_draw();
+        bad += check("FIENDBOX: HOME on COVEN draws the creatures where the scope was",
+                     memcmp(scope_px, host_screen, sizeof scope_px) != 0);
+    }
 
     /* the rows: T1 (not selected) a line, T2 selected, T3 muted, T4 the DRUM beat */
     ui_power_on();

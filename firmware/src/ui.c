@@ -78,8 +78,9 @@ static uint32_t up_gen;                      /* bumped on every user bank change
  * uses, saved with the settings; 0 in older settings = SCOPE; an unknown value (a later firmware's view) reads as SCOPE
  * and is kept as saved */
 #define ui_home_view (favorites.factory[15][26])
-enum { HV_SCOPE, HV_TRACKS, HV_COUNT };
+enum { HV_SCOPE, HV_TRACKS, HV_COVEN, HV_COUNT };
 static int home_tracks(void) { return ui_home_view == HV_TRACKS; }
+static int home_coven(void) { return ui_home_view == HV_COVEN; }   /* FIENDBOX: the coven */
 enum { RP_CLICK, RP_LEVEL, RP_COUNTIN };
 static uint32_t rp_get(uint32_t f)                     /* a field as the MENU steps it: 0..2 */
 {

@@ -109,7 +109,7 @@ static const char *const SCROFF_N[5] = {"NEVER", "5 MIN", "15 MIN", "30 MIN", "6
 static const char *const ANIM_N[3] = {"ON", "OFF", "IDLE"};
 static const uint8_t ANIM_ORD[3] = {1, 0, 2};          /* (a value's place in the menu's order, and back: its own inverse) */
 /* 1.3 (Discussions #112, #134): what HOME shows under its cards (ui.c ui_home_view): the scope, or the four tracks */
-static const char *const HOME_N[HV_COUNT] = {"SCOPE", "TRACKS"};
+static const char *const HOME_N[HV_COUNT] = {"SCOPE", "TRACKS", "COVEN"};
 
 /* MENU > USB SERIAL (#67). The serial console is a developer tool (README: FELUCCA_CDC). ON (the default) presents it,
  * the descriptors byte for byte as before; OFF re-enumerates as audio + MIDI only, device class 0 (the bytes of a
@@ -141,7 +141,7 @@ static const menu_flag_t *menu_flag(uint32_t row)
 /* a row's value as 0..menu_n(row) - 1 in the order the menu steps it (LEDS: OFF DIM LO DIM HI INV, LEDS_MENU) */
 static uint32_t menu_n(uint32_t row)
 {
-    return row == MI_COLOR ? NPALETTES : row == MI_LOWCUT || (row >= MI_CLICK && row <= MI_COUNTIN) ? 3u :
+    return row == MI_COLOR ? NPALETTES : row == MI_HOME ? (uint32_t)HV_COUNT : row == MI_LOWCUT || (row >= MI_CLICK && row <= MI_COUNTIN) ? 3u :
            row == MI_HOLD ? 4u : row == MI_LEDS ? LEDS_COUNT : row == MI_SCROFF ? NELEM(SCROFF_N) :
            row == MI_TUNE ? TUNE_N : row == MI_MIDIIN ? NELEM(N_ROUTE) : row == MI_ANIM ? 3u :
            row == MI_SCENE ? GB_NSCENE : 2u;
@@ -160,7 +160,7 @@ static uint32_t menu_get(uint32_t row)
     case MI_SCENE: return ui_scene < GB_NSCENE ? ui_scene : 0u;   /* (a later version's: DUNGEON, as played) */
     case MI_SCROFF: return scr_get();
     case MI_ANIM: return ui_prefs & PREF_ANIM_OFF ? 1u : (ui_idle & 1u) ? 2u : 0u;
-    case MI_HOME: return (uint32_t)home_tracks();
+    case MI_HOME: return (uint32_t)ui_home_view % HV_COUNT;
     case MI_CLICK: case MI_CLKLVL: case MI_COUNTIN: return rp_get(row - MI_CLICK);
     case MI_TUNE: return (uint32_t)(clamp(song.g[G_TUNE], TUNE_MIN, TUNE_MIN + (int32_t)TUNE_N - 1) - TUNE_MIN);
     case MI_MIDIIN: return (uint32_t)clamp(song.g[G_ROUTE], 0, (int32_t)NELEM(N_ROUTE) - 1);
@@ -234,7 +234,7 @@ static void menu_put(uint32_t row, uint32_t v)
         ui_prefs = (uint8_t)(v == 1u ? ui_prefs | PREF_ANIM_OFF : ui_prefs & ~PREF_ANIM_OFF);
         ui_idle = (uint8_t)(v == 2u ? ui_idle | 1u : ui_idle & ~1u);
     case MI_HOME:                                      /* (another look: HOME drawn anew) */
-        ui_home_view = (uint8_t)(v ? HV_TRACKS : HV_SCOPE);
+        ui_home_view = (uint8_t)((uint32_t)v < HV_COUNT ? (uint32_t)v : HV_SCOPE);
         ui.force = 1;
         break;
     case MI_LEDS: settings_leds = LEDS_MENU[v]; break;

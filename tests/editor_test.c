@@ -876,7 +876,7 @@ static int menu_protocol(void)
         {"SCREEN OFF", "NEVER,5 MIN,15 MIN,30 MIN,60 MIN"},
         {"SCOPE", "OUT,MIX"}, {"STEP PREVIEW", "OFF,ON"}, {"CHORD ENTRY", "HOLD,ADD"},                  /* (1.2) */
         {"MIDI IN", "CH1-4,SEL,CH5-8,CH9-12,CH13-16"}, {"TUNE", 0},   /* (1.2: the project's ROUT and TUNE; TUNE a number) */
-        {"HOME", "SCOPE,TRACKS"},                                                                     /* (1.3) */
+        {"HOME", "SCOPE,TRACKS,COVEN"},                                                                     /* (1.3) */
         {"NOTE NAMES", "ON,OFF"}};                                                                    /* (GHOULBOX 2.1) */
     static const int32_t DEF[26] = {-1, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};   /* (COLOR: the default palette) */
     static const uint8_t TAB[26] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 4, 4, 2, 2, 2, 4, 1, 0, 0, 1, 1, 3, 2, 0, 1};   /* DISPLAY CONTROL AUDIO

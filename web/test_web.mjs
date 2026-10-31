@@ -187,7 +187,7 @@ async function editorMock() {
        items.slice(0, 22).every((d) => d.kind === 0 && d.min === 0 && d.names.length === d.max - d.min + 1) &&
        items[21].names.join() === "CH1-4,SEL,CH5-8,CH9-12,CH13-16" && items[21].value === 0 &&
        items[22].kind === 1 && items[22].min === -50 && items[22].max === 50 && items[22].unit === "ct" && items[22].value === 0 &&
-       items[23].kind === 0 && items[23].names.join() === "SCOPE,TRACKS" && items[23].value === 0 &&
+       items[23].kind === 0 && items[23].names.join() === "SCOPE,TRACKS,COVEN" && items[23].value === 0 &&
        eq(items[0].names, prefs.palettes) && items[0].value === m.state.palette &&
        items[4].names.join() === "OFF,DIM LO,DIM HI,INV" && items[4].value === 2 && items[5].value === 1,
        "editor: MENU_DESC lists every setting, its value names and value");
