@@ -2182,6 +2182,8 @@ static void torch_tick(void)                          /* only the two torch rect
     cv_blit(TORCH_RX, graph_y() + TORCH_Y);
 }
 
+#include "ui_fiends.c"                              /* FIENDBOX: the familiars (adapted from JIANT's beings) */
+
 static void draw_graph(void)
 {
     const page_t *pg = cur_page();
@@ -2307,6 +2309,7 @@ static void draw_graph(void)
             else if ((pg->scope == SC_ENGINE || pg->id[0] == P_FM1_LEVEL) && t->eng_req % NENGINES == ENGI_DIGITAL)
                 graph_fm(t, c);                      /* (OP LEVEL too: the levels on the chart) */
 #endif
+            else if (pg->scope == SC_ENGINE) { cv_oy = 0; creature(t); }   /* FIENDBOX: the engine's familiar (was the scope) */
             else { cv_oy = 0; graph_scope(c); }
             break;
         }

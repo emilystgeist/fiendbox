@@ -45,6 +45,11 @@ static const menu_credit_t MENU_CREDITS[] = {
     {"The dungeon-synth fork of Felucca: GPL-3.0-only", MC_TEXT},
     {"https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth", MC_URL},
     {"", MC_TEXT},
+    {"JIANT FM", MC_TITLE},
+    {"Juan Ignacio Antonucci (Juan Jiant)", MC_TEXT},
+    {"The familiars: GPL-3.0-only", MC_TEXT},
+    {"https://github.com/juanjiant-bit/JIANT", MC_URL},
+    {"", MC_TEXT},
     {"H\xFCgelton Instruments", MC_TITLE},  /* Felucca's own: above; these are ours too */
     {"Leo Kuroshita", MC_TEXT},
     {"CrispyZebra (PHASE waveforms), the DRUM voices, the Sample Pack: GPL-3.0", MC_TEXT},
