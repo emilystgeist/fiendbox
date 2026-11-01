@@ -125,6 +125,7 @@ static void settings_fresh(void)
 #ifdef FELUCCA_FAVORITES
     favorites.factory[15][30] |= GB_SERIAL_OFF;                  /* (2.1: RESTORE LAST ON, Felucca's default) */
     favorites.factory[15][28] |= GB_MIG_SERIAL | GB_MIG_RESTORE | GB_MIG_RESTORE_ON;
+    favorites.factory[15][26] = 2;                               /* FIENDBOX: a new device starts on the coven (ui.c HV_COVEN) */
 #endif
 }
 

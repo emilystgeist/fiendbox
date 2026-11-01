@@ -23,8 +23,8 @@ static const char *const PRESET_CAT[16] = {   /* GHOULBOX: its sounds after Felu
                                   * PLUCK, BRASS, WIND, STRINGS; CRYPT PAD, FROST STR, WAR HORN, DIRGE BASS */
     "",                          /* 1 DIGITAL (retired) */
     "LKPLUU" "L",                /* 2 PHASE: BRASS, ORGAN, STRING, RESO, BELL, WIRE; GRIM BRASS */
-    "LBLLL" "LPL",               /* 3 LOFI: PULSE LD, WAVE BASS, ARP 8BIT, WAVE LEAD, STEP LEAD; TOWER LEAD, CASIO CHOIR,
-                                  * RECORDER */
+    "LBLLL" "LPL" "FFFLFUP",               /* 3 LOFI: PULSE LD, WAVE BASS, ARP 8BIT, WAVE LEAD, STEP LEAD; TOWER LEAD, CASIO CHOIR,
+                                  * RECORDER; FIENDBOX: BYTEBEAT, BYTE VAR, BYTE BENT, BYTE TONE, FLOAT FM, FLOAT ARP, FLOAT PAD */
     "KKLL" "K" "PKLU",           /* 4 SAMPLE: PIANO, (PIANO: the retired TRANH's alias), FLUTE, SAX, (PIANO: the retired
                                   * PERC's alias); BOWED PSALT, REN ORGAN, TENOR RECORD, FOLK HARP */
     "PLBF" "PPFP",               /* 5 VOICE: CHOIR AAH, VOX LEAD, WOW BASS, WHISPER; MONKS, CRYPT CHOIR, WRAITH, LOW DRONE */

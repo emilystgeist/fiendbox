@@ -9,10 +9,10 @@
  * ADSR curve (lofi_amp), the triangle becomes a 32-step 4-bit staircase, the pulse
  * duties are 12.5 / 25 / 50 / 75 %; CRSH then sets the envelope (shown as "DCY"). */
 static const char *const N_CHIP[] = {"4BIT", "4B/2", "8BIT", "1BIT", "STEP"};
-static const char *const N_RWAVE[] = {"PLS", "TRI", "SAW", "NOIS", "WRAM"};
+static const char *const N_RWAVE[] = {"PLS", "TRI", "SAW", "NOIS", "WRAM", "BYTE", "FLOAT"};
 static const char *const N_RARP[] = {"OFF", "OCT", "MAJ", "MIN"};
 enum { CHIP_4BIT, CHIP_4B2, CHIP_8BIT, CHIP_1BIT, CHIP_STEP };
-enum { RW_PLS, RW_TRI, RW_SAW, RW_NOIS, RW_WRAM };
+enum { RW_PLS, RW_TRI, RW_SAW, RW_NOIS, RW_WRAM, RW_BYTE, RW_FLOAT };   /* (FIENDBOX: BYTE, FLOAT: eng_beat.c) */
 
 /* wave RAM: 16 tables x 32 samples x 4 bits, two samples a byte (high nibble first);
  * our own shapes, from simple formulas (squares, sine, triangle, saws, harmonic sums,
@@ -46,9 +46,15 @@ static const char *const N_DCY[] = {"CONST", "D0", "D1", "D2", "D3", "D4", "D5",
                                     "L8", "L9", "L10", "L11", "L12", "L13", "L14", "L15", 0};
 static const param_desc_t LOFI_WAVNUM = {"WAV#", F_INT, 0, 127, 64, N_WRAM, 0};   /* = edit[2] but the names */
 static const param_desc_t LOFI_DCY = {"DCY", F_INT, 0, 127, 0, N_DCY, 0};        /* = edit[3] but the names */
+#include "eng_beat.c"                     /* FIENDBOX: BYTE and FLOAT (adapted from JIANT's LOFI) */
 
 static const param_desc_t *lofi_desc(const track_t *t, uint32_t k)
 {
+    if (t->p[P_E1] >= RW_BYTE) {                        /* FIENDBOX: BYTE, FLOAT: their own labels */
+        const param_desc_t *bd = beat_desc(t, k);
+        if (bd)
+            return bd;
+    }
     if (k == 2u && t->p[P_E1] == RW_WRAM)
         return &LOFI_WAVNUM;
     if (k == 3u && t->p[P_E0] == CHIP_STEP)
@@ -72,6 +78,12 @@ static void lofi_note_on(track_t *t, voice_t *v)
     v->s[5] = 0;                 /* arp counter */
     v->s[6] = 15 | (step_period(t->p[P_E3] >> 2) & 15) << 4;   /* stepped env: every note-on restarts it */
     v->s[7] = 0;
+    if (t->p[P_E1] >= RW_BYTE) {                        /* FIENDBOX: BYTE, FLOAT: the time t restarts from 0 */
+        v->s[2] = 0;
+        v->ph[0] = v->ph[1] = 0;
+        v->s[5] = t->p[P_E1] == RW_BYTE ? BEAT_NODC : 0;
+        v->s[6] = 0;
+    }
 }
 
 /* CHIP = STEP: the voice amplitude is the stepped envelope, not the ADSR curve. The ADSR only
@@ -81,7 +93,7 @@ static void lofi_note_on(track_t *t, voice_t *v)
 static int32_t lofi_amp(track_t *t, voice_t *v, int32_t adsr)
 {
     int32_t b = t->p[P_E3] >> 2, vol = v->s[6] & 15, div = (v->s[6] >> 4) & 15;
-    if (t->p[P_E0] != CHIP_STEP)
+    if (t->p[P_E0] != CHIP_STEP || t->p[P_E1] >= RW_BYTE)   /* (FIENDBOX: BYTE, FLOAT: no STEP) */
         return adsr;
     if (!v->active)                                     /* the ADSR ended it (or the voice was given up) */
         return 0;
@@ -137,6 +149,10 @@ static void lofi_render(track_t *t, voice_t *v, int32_t *out, uint32_t n, const 
         for (i = 0; i < 16u; i++)
             sum += bits == 1 ? ((wr[i] >> 7) + ((wr[i] >> 3) & 1)) * 2 - 2 : (wr[i] >> 4) + (wr[i] & 15) - 15;
         wdc = bits == 1 ? sum * 32767 / 32 : sum * 2 * Q4 / 32;   /* (2 v - 15) Q4, or +-32767 at 1 bit */
+    }
+    if (wave >= RW_BYTE) {                              /* FIENDBOX: bytebeat, floatbeat (eng_beat.c) */
+        beat_render(t, v, out, n, m);
+        return;
     }
     /* sweep down, vibrato (uses the track LFO through m->pitch16 already) */
     if (v->s[3] < 4096)                                 /* past 2047 + an arp step the pitch is 0 anyway */
@@ -217,6 +233,14 @@ static const preset_t LOFI_PRESETS[] = {
     {"CASIO CHOIR", {0, 4, 92, 0, 0, 20, 0, 80}, {60, 90, 115, 90}, 0, 0, FX(0, 70, 20, 100), PAT(5)},
     {"RECORDER", {2, 1, 64, 0, 0, 24, 0, 60}, {12, 70, 115, 50}, 0, 1, FX(0, 20, 25, 90), PAT(4)},
     /* GHOULBOX end */
+    /* FIENDBOX: BYTE and FLOAT (eng_beat.c; JIANT's presets of them). WAVE 5 BYTE, 6 FLOAT; DUTY / 4 picks the formula */
+    {"BYTEBEAT", {2, 5, 4, 0, 64, 0, 0, 0}, {0, 80, 110, 40}, 0, 1, FX(0, 0, 25, 20), PAT(4)},
+    {"BYTE VAR", {2, 5, 64, 40, 64, 0, 0, 0}, {0, 80, 110, 50}, 0, 1, FX(0, 20, 30, 25), PAT(3)},
+    {"BYTE BENT", {2, 5, 16, 0, 64, 24, 70, 0}, {0, 80, 110, 45}, 0, 1, FX(10, 10, 30, 25), PAT(4)},
+    {"BYTE TONE", {2, 5, 40, 0, 64, 0, 0, 80}, {0, 70, 100, 40}, 0, 1, FX(0, 0, 30, 20), PAT(4)},
+    {"FLOAT FM", {2, 6, 4, 0, 64, 0, 0, 0}, {0, 60, 90, 40}, 0, 1, FX(0, 15, 25, 25), PAT(4)},
+    {"FLOAT ARP", {2, 6, 8, 0, 64, 0, 0, 0}, {0, 50, 80, 50}, 0, 1, FX(0, 25, 30, 30), PAT(3)},
+    {"FLOAT PAD", {2, 6, 112, 0, 40, 0, 0, 0}, {60, 90, 110, 90}, 0, 1, FX(30, 10, 50, 40), PAT(3)},
 };
 
 static const engine_t ENG_LOFI = {
@@ -224,7 +248,7 @@ static const engine_t ENG_LOFI = {
     .page_title = {"CHIP", "MOTN"},
     .edit = {
         {"CHIP", F_ENUM, 0, 4, 0, N_CHIP, 0},
-        {"WAVE", F_ENUM, 0, 4, 0, N_RWAVE, 0},
+        {"WAVE", F_ENUM, 0, 6, 0, N_RWAVE, 0},
         {"DUTY", F_INT, 0, 127, 64, 0, 0},              /* WRAM: the table, DUTY / 8 (lofi_desc) */
         {"CRSH", F_PCT, 0, 127, 0, 0, 0},               /* STEP: the envelope (lofi_desc) */
         {"SWP", F_PCT, 0, 127, 0, 0, 0},
