@@ -28,7 +28,7 @@ def mix(a, b, pct):                                     # gfx.c ux_mix: a toward
 
 
 def crypt(gen):
-    m = re.search(r'\{"CRYPT",\s*(0x\w+),\s*(0x\w+),\s*(0x\w+),\s*(0x\w+),\s*(0x\w+)\}',
+    m = re.search(r'\{"FIEND",\s*(0x\w+),\s*(0x\w+),\s*(0x\w+),\s*(0x\w+),\s*(0x\w+)\}',
                   (gen / "ui_palettes.h").read_text())
     bg, surf, text, theme, accent = (rgb565(int(v, 16)) for v in m.groups())
     return {"bg": bg, "surf": surf, "text": text, "theme": theme, "accent": accent,

@@ -1,15 +1,15 @@
 name: Bug report
-description: Something in GHOULBOX or its installer doesn't work as it should (one bug per issue)
+description: Something in FIENDBOX or its installer doesn't work as it should (one bug per issue)
 labels: [bug]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting! GHOULBOX is a fork of [Felucca](https://github.com/hugelton/Felucca): please report GHOULBOX problems here, not to Felucca.
+        Thanks for reporting! FIENDBOX is a fork of [Felucca](https://github.com/hugelton/Felucca): please report FIENDBOX problems here, not to Felucca.
   - type: input
     id: version
     attributes:
-      label: GHOULBOX version
+      label: FIENDBOX version
       description: Hold HOME > ABOUT on the FM-1 (if it still starts)
       placeholder: "1.0"
   - type: input

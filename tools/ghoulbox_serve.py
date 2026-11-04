@@ -24,7 +24,7 @@ def main():
     ver = re.search(r'#define GHOULBOX_VERSION "([^"]+)"', (ROOT / "firmware/src/core.h").read_text())[1]
     site = Path(tempfile.mkdtemp(prefix="ghoulbox-site-"))
     subprocess.run([sys.executable, ROOT / "web/make_site.py", ROOT / "build/felucca.fwsc", f"gb{ver}", site], check=True)
-    print(f"GHOULBOX {ver}: http://localhost:8000/webapp/installer/  (Ctrl+C to stop)")
+    print(f"FIENDBOX {ver}: http://localhost:8000/webapp/installer/  (Ctrl+C to stop)")
     http.server.ThreadingHTTPServer(("127.0.0.1", 8000), functools.partial(NoCache, directory=str(site))).serve_forever()
 
 

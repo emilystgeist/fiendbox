@@ -5,13 +5,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GHOULBOX</title>
+<title>FIENDBOX</title>
 <meta name="color-scheme" content="dark">
 <style>
-  /* GHOULBOX: the dungeon, as the emulator page (web/emu/index.html): CRYPT's colours, the art from
+  /* FIENDBOX: the dungeon, as the emulator page (web/emu/index.html): the FIEND palette's colours, the art from
    * tools/gen_emu_art.py in ../art/ (make_site.py), scaled by whole numbers */
-  :root { --bone: #efdfc6; --dim: #b3a58c; --amber: #ef9a29; --ember: #ef4d42; --night: #080808;
-          --plaque: rgba(8, 8, 8, .88); --fg: var(--bone); color-scheme: dark; }
+  :root { --bone: #d5eaf6; --dim: #9fafba; --amber: #00cade; --ember: #ff285a; --night: #060810;
+          --plaque: rgba(6, 8, 16, .88); --fg: var(--bone); color-scheme: dark; }
   html { background: var(--night); }
   body { margin: 0; color: var(--bone); min-height: 100vh; image-rendering: pixelated;
          font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -21,7 +21,7 @@
   a { color: var(--amber); }
   .crest { display: flex; justify-content: center; align-items: center; gap: 24px; margin: 4px 0 10px; }
   .crest .skull { width: 96px; height: 112px; }
-  .crest .logo { height: 104px; width: auto; filter: drop-shadow(0 0 10px rgba(239, 154, 41, .35)); }
+  .crest .logo { height: 104px; width: auto; filter: drop-shadow(0 0 10px rgba(0, 202, 222, .35)); }
   .crest img { image-rendering: auto; }   /* (drawn smooth at 2x: tools/gen_emu_art.py) */
   .tagline { margin: 0 0 22px; text-align: center; font: 700 20px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
               "Helvetica Neue", Arial, sans-serif; letter-spacing: .02em; text-shadow: 0 0 3px #000, 0 0 6px #000, 0 2px 0 #000; }
@@ -31,7 +31,7 @@
            background: url("../art/torch.png") 0 0 / 192px 120px no-repeat; animation: torch .48s steps(4) infinite; }
   .torch.r { animation-delay: -.24s; }
   .torch::before { content: ""; position: absolute; left: 50%; top: 18px; width: 420px; height: 420px; margin: -210px 0 0 -210px;
-                   background: radial-gradient(circle, rgba(239, 154, 41, .30), rgba(239, 77, 66, .10) 40%, transparent 68%);
+                   background: radial-gradient(circle, rgba(0, 202, 222, .30), rgba(255, 40, 90, .10) 40%, transparent 68%);
                    animation: glow 1.7s ease-in-out infinite alternate; pointer-events: none; z-index: -1; }
   .torch.r::before { animation-duration: 1.3s; }
   @keyframes torch { to { background-position: -192px 0; } }
@@ -41,7 +41,7 @@
   @media (max-width: 600px) { .crest .skull { width: 48px; height: 56px; } .crest .logo { height: 52px; width: auto; }
                               .crest { gap: 12px; } .tagline { font-size: 16px; } }
   /* stone plaques (a window's frame, as gfx.c cv_window) */
-  .plaque { background: var(--plaque); padding: 20px 22px; box-shadow: 0 0 0 2px #6b4513, 0 0 0 4px #000, 0 0 0 6px #3a3a3e; }
+  .plaque { background: var(--plaque); padding: 20px 22px; box-shadow: 0 0 0 2px #065a68, 0 0 0 4px #000, 0 0 0 6px #2a3045; }
   .plaque + .plaque { margin-top: 26px; }
   .plaque { position: relative; }
   .lang { position: absolute; top: 4px; right: 10px; font: 13px/1.4 sans-serif; letter-spacing: 0; cursor: pointer;
@@ -49,7 +49,7 @@
   .plaque:first-child { padding-top: 30px; }
   p { margin: 0 0 14px; }
   .small { color: var(--dim); font-size: 13px; }
-  .note { border-left: 4px solid var(--amber); padding: 6px 0 6px 12px; background: rgba(239, 154, 41, .08); }
+  .note { border-left: 4px solid var(--amber); padding: 6px 0 6px 12px; background: rgba(0, 202, 222, .08); }
   /* the buttons: pixel slabs (the light top edge, the dark bottom), Install in torch amber */
   button { font: 600 16px/1 monospace; letter-spacing: .08em; cursor: pointer; border: 0; padding: 12px 24px; color: var(--night);
            background: var(--bone); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .35), inset 0 4px 0 rgba(255, 255, 255, .3), 0 0 0 2px #000; }
@@ -57,11 +57,11 @@
   button:disabled { opacity: .35; cursor: default; }
   #go { background: var(--amber); font-size: 20px; padding: 16px 40px; }
   #go:not(:disabled) { animation: ember 2.4s ease-in-out infinite; }
-  @keyframes ember { 50% { box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .35), inset 0 4px 0 rgba(255, 255, 255, .3), 0 0 0 2px #000, 0 0 18px rgba(239, 154, 41, .55); } }
+  @keyframes ember { 50% { box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .35), inset 0 4px 0 rgba(255, 255, 255, .3), 0 0 0 2px #000, 0 0 18px rgba(0, 202, 222, .55); } }
   @media (prefers-reduced-motion: reduce) { #go:not(:disabled) { animation: none; } }
   .go-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; margin: 18px 0 6px; }
   .try { font-weight: 700; font-size: 16px; }
-  .support { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid #3a3a3e; }
+  .support { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid #2a3045; }
   .kofi { display: inline-block; margin-right: 10px; font: 600 15px/1 monospace; letter-spacing: .06em; text-decoration: none;
           color: var(--night); background: var(--bone); padding: 10px 18px;
           box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .35), inset 0 4px 0 rgba(255, 255, 255, .3), 0 0 0 2px #000; }
@@ -76,7 +76,7 @@
 <main>
   <header class="crest">
     <img class="skull" src="../art/skull.png" alt="">
-    <img class="logo" src="../art/logo.png" alt="GHOULBOX">
+    <img class="logo" src="../art/logo.png" alt="FIENDBOX">
   </header>
   <p class="tagline" data-t="tagline"></p>
   <div class="stage">
@@ -106,18 +106,15 @@
   <p id="status"></p>
   <pre id="log"></pre>
   <p><a href="../editor/" data-t="editor"></a></p>
-  <p><a href="https://www.youtube.com/playlist?list=PLMUs0QD7QfOw" target="_blank" rel="noopener" data-t="lessons"></a></p>
   <p><a href="../../firmwares/" data-t="allfw"></a></p>
-  <p class="support"><a class="kofi" href="https://ko-fi.com/ghoulbox" target="_blank" rel="noopener" data-t="support"></a>
-    <a class="kofi" href="https://ghoulbox-shop.fourthwall.com/" target="_blank" rel="noopener" data-t="merch"></a> <span class="small" data-t="supportWhy"></span></p>
   </section>
   <section class="plaque">
-  <p class="small">GHOULBOX by Jason Persinger: <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth" target="_blank" rel="noopener">source</a>, <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth/issues" target="_blank" rel="noopener">problems</a>, <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth/releases" target="_blank" rel="noopener">user guide</a>. The name is set in Pirata One (SIL OFL 1.1).<br>
+  <p class="small">FIENDBOX is built on <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth" target="_blank" rel="noopener">GHOULBOX</a> by Jason Persinger, <a href="https://github.com/juanjiant-bit/JIANT" target="_blank" rel="noopener">JIANT FM</a> by Juan Jiant and <a href="https://github.com/hugelton/Felucca" target="_blank" rel="noopener">Felucca</a> by Hügelton Instruments. The name is set in UnifrakturMaguntia (SIL OFL 1.1).<br>
     On Felucca by Leo Kuroshita (@kurogedelic), <a href="https://hugelton.com" target="_blank" rel="noopener">Hügelton Instruments</a>, with its CrispyZebra waveforms, drum voices, Sample Pack and Fukiai icons (MIT).<br>
     Font: Inter Tight (The Inter Project Authors, SIL OFL 1.1). Samples: Versilian Studios VSCO-2 Community Edition and VCSL (CC0 1.0).<br>
     FM6 engine: msfa from Dexed (Google Inc., Pascal Gauthier, Apache-2.0). The package also holds three JieLi AC79 SDK files, uboot.boot, cfg_tool.bin and eq_cfg_hw.bin (JieLi Technology, Apache-2.0). <a href="../../firmware/LICENSING.md">Licences</a>: <a href="../../firmware/LICENSE">GPL-3.0</a>, <a href="../../firmware/LICENSES/Apache-2.0.txt">Apache-2.0</a>, <a href="../../firmware/LICENSES/">all</a>.<br>
     M-VAVE and FM-1 are trademarks of their respective owners.<br>
-    <span data-t="license"></span> <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth" target="_blank" rel="noopener">GHOULBOX</a> · <a href="https://github.com/hugelton/Felucca" target="_blank" rel="noopener">Felucca</a></p>
+    <span data-t="license"></span> <a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth" target="_blank" rel="noopener">GHOULBOX</a> · <a href="https://github.com/juanjiant-bit/JIANT" target="_blank" rel="noopener">JIANT FM</a> · <a href="https://github.com/hugelton/Felucca" target="_blank" rel="noopener">Felucca</a></p>
   </section>
   </div>
   <div class="torch r" aria-hidden="true"></div>
@@ -128,7 +125,7 @@
 const $ = (id) => document.getElementById(id);
 const TEXT = {
   ja: {
-    tagline: "FM-1 に GHOULBOX {v} をインストール",
+    tagline: "FM-1 に FIENDBOX {v} をインストール",
     backupFirst: "先にバックアップを保存してください（インストーラーは自動で作りません）。エディタを開いて FM-1 を接続し、Settings タブの Save backup を押します。",
     tryit: "まずブラウザで試す →", lessons: "はじめてのダンジョンシンセ? ビデオレッスン (YouTube, 英語)", allfw: "FM-1 のほかの無料ファームウェア",
     support: "Ko-fi で支援", merch: "グッズ", supportWhy: "GHOULBOX は無料です。チップは新しい音色・レッスン・更新に使われます。",
@@ -138,7 +135,7 @@ const TEXT = {
     editor: "エディタ（インストール後、パソコンから音色やシーケンスを編集）",
     direct: "USB ケーブルはパソコンに直接つないでください。Probe や Transporter などの機材は不要です。",
     brick: "万一インストールに失敗して起動しなくなった場合は、復旧に Transporter が必要です:",
-    beta: "GHOULBOX は 1 台の FM-1 でテストしています。不具合は GitHub で知らせてください。このカスタムファームウェアを使ったことで FM-1 が壊れたり不具合が起きたりしても、作者は一切の責任を負いません。自己責任でお使いください。",
+    beta: "FIENDBOX は 1 台の FM-1 でテストしています。不具合は GitHub で知らせてください。このカスタムファームウェアを使ったことで FM-1 が壊れたり不具合が起きたりしても、作者は一切の責任を負いません。自己責任でお使いください。",
     back: "M-VAVEから公式FM-1 V15を取得し、未変更のFM-1.fwscを選んでください。ファイルはこのブラウザ内で検証し、サーバーへ送りません。",
     stockTitle: "公式V15に戻す", stockFile: "公式FM-1.fwsc", stockGo: "バックアップして公式V15へ戻す",
     stockBackup: "現在の曲・保存曲・音色バンク・サンプル・設定を先に保存します。全体バックアップ非対応版は、Feluccaを更新してから行ってください。復元はFeluccaを再インストールしてエディタから行います。",
@@ -165,7 +162,7 @@ const TEXT = {
     license: "GPL-3.0、無保証。ソース:",
   },
   en: {
-    tagline: "Install GHOULBOX {v} on your FM-1",
+    tagline: "Install FIENDBOX {v} on your FM-1",
     backupFirst: "First save a backup: the installer doesn't make one. Open the Editor (below), connect the FM-1, and on the Settings tab press Save backup.",
     tryit: "Try it in your browser first →", allfw: "Every other free FM-1 firmware", lessons: "New to dungeon synth? Watch the five video lessons (YouTube)",
     support: "Support on Ko-fi", merch: "Merch", supportWhy: "GHOULBOX is free. Tips fund new sounds, lessons and updates.",
@@ -175,7 +172,7 @@ const TEXT = {
     editor: "Editor (after installing: edit sounds and sequences from the computer)",
     direct: "Connect the USB cable directly to the computer. No probe or Transporter is needed.",
     brick: "If an install fails and the FM-1 no longer starts, recovering it needs a Transporter:",
-    beta: "GHOULBOX is tested on one FM-1; please report problems on GitHub. The authors accept no responsibility if your FM-1 is damaged or misbehaves because of this custom firmware. Use it at your own risk.",
+    beta: "FIENDBOX is tested on one FM-1; please report problems on GitHub. The authors accept no responsibility if your FM-1 is damaged or misbehaves because of this custom firmware. Use it at your own risk.",
     back: "Get official FM-1 V15 from M-VAVE and select the unmodified FM-1.fwsc. The browser validates it locally; it is not sent to a server.",
     stockTitle: "Return to official V15", stockFile: "Official FM-1.fwsc", stockGo: "Back up and return to official V15",
     stockBackup: "Current music, saved music, sound banks, samples and settings are saved first. Older firmware needs a Felucca update for complete backups. To restore an archive later, reinstall Felucca and use the editor.",
@@ -232,7 +229,7 @@ window.addEventListener("beforeunload", (e) => { if (writing) { e.preventDefault
     const pkg = new Uint8Array(await r.arrayBuffer());
     if (productOf(pkg) !== meta.product) { sayK("badpkg"); return; }
     image = logicalImage(pkg);
-    say(`GHOULBOX ${VER}`);
+    say(`FIENDBOX ${VER}`);
     $("go").disabled = false;
     let resume = null;
     try { resume = sessionStorage.getItem("ghoulbox-resume"); sessionStorage.removeItem("ghoulbox-resume"); } catch (_) {}
@@ -309,7 +306,7 @@ $("stock-file").addEventListener("change", async () => {
 });
 function saveArchive(archive) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(archive)], {type:"application/json"}));
-  const a = document.createElement("a"); a.href = url; a.download = `GHOULBOX-backup-${new Date().toISOString().slice(0,10)}.json`;
+  const a = document.createElement("a"); a.href = url; a.download = `FIENDBOX-backup-${new Date().toISOString().slice(0,10)}.json`;
   document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function archiveInfo(a) {

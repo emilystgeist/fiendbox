@@ -3,7 +3,7 @@
 # Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
 """Make the site (GitHub Pages):
 
-  CNAME                       GHOULBOX: the site's domain (GitHub Pages' custom domain; a publish must keep it)
+  CNAME                       only when FIENDBOX_DOMAIN is set: a GitHub Pages custom domain
   index.html                  redirect to the emulator (GHOULBOX; the installer when there is none)
   firmware/felucca-VER.fwsc   the package (+ LICENSE, LICENSING.md, LICENSES/: the package holds
                               JieLi SDK files under Apache-2.0, see LICENSING.md)
@@ -29,7 +29,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DOMAIN = "ghoulbox.messy.quest"                     # GHOULBOX: GitHub Pages' custom domain (the CNAME file)
+import os as _os
+DOMAIN = _os.environ.get("FIENDBOX_DOMAIN", "")        # a GitHub Pages custom domain (the CNAME file): none unless set
 BLOCKS, BLK, KEEP = 20, 0x30, 0x2F
 
 
@@ -100,7 +101,8 @@ def main(pkg, version, out):
     for f in ("fukiai.ttf", "FUKIAI-LICENSE.txt", "fm1backup.js"):
         if (HERE / f).exists():
             shutil.copy(HERE / f, ed / f)
-    (out / "CNAME").write_text(DOMAIN, encoding="utf-8")   # (as GitHub writes it: no newline)
+    if DOMAIN:
+        (out / "CNAME").write_text(DOMAIN, encoding="utf-8")   # (as GitHub writes it: no newline)
     home = "webapp/emu/" if (out / "webapp/emu/index.html").exists() else "webapp/installer/"   # GHOULBOX: the emulator
     (out / "index.html").write_text(                                                          # first, when it is there
         '<!doctype html><meta charset="utf-8"><title>GHOULBOX</title>'
