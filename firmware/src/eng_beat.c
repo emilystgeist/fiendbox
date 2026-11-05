@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
  * Copyright (C) 2026 Juan Ignacio Antonucci (Juan Jiant)
+ * Copyright (C) 2026 bemily (FIENDBOX)
  * FIENDBOX: BYTE and FLOAT, two more waves of the LOFI engine (included by eng_lofi.c), adapted from JIANT's eng_lofi.c
  * (JIANT 0.4 .. 0.9). WAVE = BYTE: bytebeat, an 8-bit formula of the time t played as the wave (after viznut's 2011
  * one-liners: the music is in the formula). WAVE = FLOAT: floatbeat, its sibling in floats: formulas made of sines.

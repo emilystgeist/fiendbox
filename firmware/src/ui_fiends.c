@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
  * Copyright (C) 2026 Juan Ignacio Antonucci (Juan Jiant)
+ * Copyright (C) 2026 bemily (FIENDBOX)
  * FIENDBOX: the familiars. Adapted from JIANT's beings (ui_being.c and the line drawing of ui_organic.c, JIANT 0.5):
  * a sound page without a graph of its own shows a creature as four nested outlines of one body, drawn in lines (no
  * stored artwork), each as hot as the creature is there: the outer membrane cold (a dim cyan), the core hot (blood,

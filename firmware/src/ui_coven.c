@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
  * Copyright (C) 2026 Juan Ignacio Antonucci (Juan Jiant)
+ * Copyright (C) 2026 bemily (FIENDBOX)
  * FIENDBOX: the coven. HOME's stage, adapted from JIANT's ecosystem (ui_lzhome.c, JIANT 0.8 / 0.9.7): the four tracks'
  * familiars (ui_fiends.c) swimming free over the stage, each by itself (wandering, bouncing off the walls, a hit kicking
  * it on, swelling with its sound), its number under it; the selected one larger, its number in the theme's colour. Each

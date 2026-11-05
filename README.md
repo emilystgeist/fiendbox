@@ -7,6 +7,8 @@ Instruments (1.4.1), with ideas and code adapted from **JIANT FM** by Juan Ignac
 
 Version 0.4 (HOME held > ABOUT). A hobby project, tested on one FM-1: **install at your own risk.**
 
+**Guide:** [docs/GUIDE.md](docs/GUIDE.md): the scenes, the familiars, the coven and the formulas.
+
 ## What FIENDBOX adds
 
 Everything Felucca and GHOULBOX do still works: four tracks, a 64-step sequencer, songs, the arpeggiator, chord keys,
