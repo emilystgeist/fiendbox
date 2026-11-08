@@ -15,5 +15,5 @@ What has been done and what might come. Plans change; nothing here is a promise.
 - **Mutation**: sounds that drift and rewrite themselves while you play, a timbre counterpart to DREAM.
 - A short FIENDBOX guide: what is new, with the scenes, the familiars, the coven and the formulas.
 - More scenes and patterns; more formulas for BYTE and FLOAT.
-- A hosted installer and a browser emulator under FIENDBOX's own name.
+- A browser emulator under FIENDBOX's own name (the installer and editor are hosted already).
 - New Felucca releases merged as they come (FIENDBOX is on Felucca 1.4.1).

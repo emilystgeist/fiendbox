@@ -40,14 +40,15 @@ split, DREAM (a page that composes and evolves patterns in key). On top of them:
 
 You need Chrome or Edge on a computer, an FM-1 on a USB **data** cable, and no other music app open.
 
-There is no hosted installer. Build the package (below), then serve the installer site on your own computer:
+The installer runs in the browser: **<https://emilystgeist.github.io/fiendbox/webapp/installer/>**. To install a package you
+built yourself instead, serve the installer site on your own computer:
 
 ```
 python3 tools/ghoulbox_serve.py       # http://localhost:8000/webapp/installer/
 ```
 
-**First save a backup:** the installer doesn't make one. Open `http://localhost:8000/webapp/editor/`, connect, and on
-its Settings tab press **Save backup**. If your FM-1 still runs M-VAVE's own firmware there is nothing to back up, but
+**First save a backup:** the installer doesn't make one. Open the [web editor](https://emilystgeist.github.io/fiendbox/webapp/editor/), connect, and on its Settings tab press
+**Save backup**. If your FM-1 still runs M-VAVE's own firmware there is nothing to back up, but
 download the official V15 file from M-VAVE first, so you can return to it.
 
 Then open the installer and press Install. If it stops after "update mode", replug the USB cable and press Install
