@@ -12,6 +12,9 @@ Version 0.4 (HOME held > ABOUT). A hobby project, tested on one FM-1: **install 
 **Try it first:** the web emulator runs the real firmware in your browser, with the mouse, the computer's keys or MIDI:
 **<https://emilystgeist.github.io/fiendbox/>**
 
+**Try it first:** the web emulator runs the real firmware in your browser, with the mouse, the computer's keys or MIDI:
+**<https://emilystgeist.github.io/fiendbox/>**
+
 ## What FIENDBOX adds
 
 Everything Felucca and GHOULBOX do still works: four tracks, a 64-step sequencer, songs, the arpeggiator, chord keys,
