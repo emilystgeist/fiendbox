@@ -107,9 +107,9 @@ def main(pkg, version, out):
         (out / "CNAME").write_text(DOMAIN, encoding="utf-8")   # (as GitHub writes it: no newline)
     home = "webapp/emu/" if (out / "webapp/emu/index.html").exists() else "webapp/installer/"   # GHOULBOX: the emulator
     (out / "index.html").write_text(                                                          # first, when it is there
-        '<!doctype html><meta charset="utf-8"><title>GHOULBOX</title>'
+        '<!doctype html><meta charset="utf-8"><title>FIENDBOX</title>'
         f'<meta http-equiv="refresh" content="0; url={home}">'
-        f'<a href="{home}">GHOULBOX</a>\n', encoding="utf-8")
+        f'<a href="{home}">FIENDBOX</a>\n', encoding="utf-8")
     print(f"site: {out}: webapp/installer ({len(html)} B), webapp/editor, firmware/{name} ({len(raw)} B, {product})")
 
 
