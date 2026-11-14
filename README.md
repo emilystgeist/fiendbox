@@ -12,9 +12,6 @@ Version 0.4 (HOME held > ABOUT). A hobby project, tested on one FM-1: **install 
 **Try it first:** the web emulator runs the real firmware in your browser, with the mouse, the computer's keys or MIDI:
 **<https://emilystgeist.github.io/fiendbox/>**
 
-**Try it first:** the web emulator runs the real firmware in your browser, with the mouse, the computer's keys or MIDI:
-**<https://emilystgeist.github.io/fiendbox/>**
-
 ## What FIENDBOX adds
 
 Everything Felucca and GHOULBOX do still works: four tracks, a 64-step sequencer, songs, the arpeggiator, chord keys,
@@ -45,6 +42,12 @@ split, DREAM (a page that composes and evolves patterns in key). On top of them:
 ## Install
 
 You need Chrome or Edge on a computer, an FM-1 on a USB **data** cable, and no other music app open.
+
+**Newer FM-1s are not supported yet.** FM-1s sold since autumn 2026 (as far as we know, the ones with an M-VAVE logo below
+the screen) carry a different flash chip, a UC25HQ80 (ID 0xB36014) instead of the first revision's P25Q80 (0x856014).
+FIENDBOX 0.4 only recognises the first chip. Felucca-based firmware that does the same can't save on a newer unit and can't
+update itself, so **do not install FIENDBOX on one.** Support is planned (see the roadmap) and needs someone with a newer
+unit to test it.
 
 **Newer FM-1s are not supported yet.** FM-1s sold since autumn 2026 (as far as we know, the ones with an M-VAVE logo below
 the screen) carry a different flash chip, a UC25HQ80 (ID 0xB36014) instead of the first revision's P25Q80 (0x856014).
