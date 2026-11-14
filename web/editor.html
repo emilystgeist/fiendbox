@@ -183,14 +183,14 @@
 <body>
 <header class="crest">
   <img class="skull" src="../art/skull.png" alt="">
-  <img class="logo" src="../art/logo.png" alt="GHOULBOX">
+  <img class="logo" src="../art/logo.png" alt="FIENDBOX">
   <span class="what">Editor</span>
 </header>
 <div class="stage">
 <div class="torch" aria-hidden="true"></div>
 <main>
   <button class="lang" id="lang"></button>
-  <h1 hidden>GHOULBOX Editor</h1>
+  <h1 hidden>FIENDBOX Editor</h1>
   <p class="links"><a href="../installer/" data-t="installer"></a> <a href="../emu/" data-t="tryit"></a>
     </p>
   <!-- always visible: connection, version, sync mode, the tabs and (Sound / Sequencer / Tracks) the track selector -->
@@ -2657,9 +2657,9 @@ const TEXT = {
     foot: "Chrome か Edge で使えます。", iconsCredit: "アイコン: Fukiai（MIT）Hügelton Instruments",
     nomidi: "このブラウザでは使えません。Chrome か Edge で開いてください。",
     denied: "MIDI（SysEx）の使用が許可されませんでした。",
-    nodevice: "GHOULBOX が見つかりません。USB で接続して、もう一度押してください。",
+    nodevice: "FIENDBOX が見つかりません。USB で接続して、もう一度押してください。",
     connecting: "接続中", reading: "読み込み中 ", steploading: "ステップを読み込み中 ",
-    ready: "接続しました", disconnected: "切断されました", lost: "GHOULBOX が外されました",
+    ready: "接続しました", disconnected: "切断されました", lost: "FIENDBOX が外されました",
     noreply: "応答がありません", error: "エラー: ", busy: "処理中",
     applying: "書き込み中 ", applied: "読み込みました", badfile: "ファイルを読み込めません: ",
     savedSlot: "保存しました: スロット ", loadedSlot: "読み込みました: スロット ", emptySlot: "空のスロットです: ",
@@ -2760,9 +2760,9 @@ const TEXT = {
     foot: "Works in Chrome or Edge.", iconsCredit: "Icons: Fukiai (MIT), Hügelton Instruments",
     nomidi: "This browser cannot do it. Open the page in Chrome or Edge.",
     denied: "MIDI (SysEx) access was not allowed.",
-    nodevice: "GHOULBOX not found. Connect it by USB and press Connect again.",
+    nodevice: "FIENDBOX not found. Connect it by USB and press Connect again.",
     connecting: "Connecting", reading: "Reading ", steploading: "Reading steps ",
-    ready: "Connected", disconnected: "Disconnected", lost: "GHOULBOX was unplugged",
+    ready: "Connected", disconnected: "Disconnected", lost: "FIENDBOX was unplugged",
     noreply: "No reply from the device", error: "Error: ", busy: "Busy",
     applying: "Writing ", applied: "Loaded", badfile: "Cannot read the file: ",
     savedSlot: "Saved to slot ", loadedSlot: "Loaded slot ", emptySlot: "Empty slot: ",
@@ -3477,7 +3477,7 @@ $("backup-export").addEventListener("click", () => op(async () => {
   assertSession(d);
   const file = await captureBackup((r, o) => sessionRequest(d, r, o), d.info.version, backupProgress);
   assertSession(d);
-  download(`GHOULBOX-backup-${new Date().toISOString().slice(0, 10)}.json`, file);
+  download(`FIENDBOX-backup-${new Date().toISOString().slice(0, 10)}.json`, file);
   sayK("backupDone");
 }));
 $("backup-import").addEventListener("click", () => { if (dev?.info?.backupCaps & 2) $("backup-file").click(); });
