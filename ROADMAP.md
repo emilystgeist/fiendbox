@@ -13,6 +13,8 @@ What has been done and what might come. Plans change; nothing here is a promise.
 
 ## Ideas
 
+- **Newer FM-1s**: support for the UC25HQ80 flash chip, in the app and in the update loader. Written for the first chip's
+  FM-1 only so far, so it needs a tester with a newer unit.
 - **Mutation**: sounds that drift and rewrite themselves while you play, a timbre counterpart to DREAM.
 - A short FIENDBOX guide: what is new, with the scenes, the familiars, the coven and the formulas.
 - More scenes and patterns; more formulas for BYTE and FLOAT.
