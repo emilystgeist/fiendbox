@@ -95,6 +95,18 @@ AC79_SDK=~/fw-AC79-ref ./build_device.sh     # build/felucca.fwsc, the package t
 The build prints a warning if the SDK's files differ from the tested version: with none, the checkout is right. The
 device build leaves the SLICE engine out; the default `./build.sh` no longer fits the app slot.
 
+## Web emulator
+
+The emulator compiles the real firmware to WebAssembly with Emscripten (the site was built with emsdk 4.0.7):
+
+```
+python3 tools/build.py --gen-only   # the generated data (SLICE on)
+sh web/emu/build.sh                 # build/emu
+```
+
+It is built with `-fwrapv`: the firmware's arithmetic is written for wrapping signed integers, which the device's
+compiler gives it. Without the flag a modern clang at `-O2` turns the GURDY and drum sounds into a thud.
+
 ## Tests
 
 The firmware's own audio and screen code runs on a computer, so a change can be heard and seen before flashing:

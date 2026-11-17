@@ -5,8 +5,9 @@
 # to WebAssembly with Emscripten, plus the page. After X0X's web/emu/build.sh (charlesvestal/fm1-x0x, GPL-3.0).
 #   web/emu/build.sh   ->  build/emu/{index.html, tools.html, worklet.js, felucca.wasm, fonts/}
 # Run after one ./build.sh (build/gen: the tables, the fonts, the CC0 samples).
-# -ffp-contract=off: no fused multiply-adds, as the host build. EMU_OPT replaces -O1 (FIENDBOX: built at -O2 by Emscripten 4.0.7 the GURDY and DRUM sounds came out as a thud;
-# the device's compiler and the host tests are fine, so -O2 is left out until the cause is known), EMU_CFLAGS adds flags
+# -ffp-contract=off: no fused multiply-adds, as the host build. EMU_OPT replaces -O2. FIENDBOX: -fwrapv always. The firmware is written for wrapping signed arithmetic (the device's
+# compiler gives it); without the flag Emscripten 4.0.7's clang at -O2 turned the GURDY and DRUM sounds into a thud
+# (gcc -fsanitize=undefined on tests/gurdy_test.c and tests/drum_test.c names the sites), EMU_CFLAGS adds flags
 # (EMU_CFLAGS=-msimd128: let the compiler vectorise; every browser with AudioWorklet has wasm SIMD).
 # The page shows the version (FELUCCA_VERSION) marked "(preview)" before its release; EMU_PREVIEW=0 drops the mark.
 set -e
@@ -17,7 +18,7 @@ VERSION=$(sed -n 's/^#define FELUCCA_VERSION "\([^"]*\)".*/\1/p' firmware/src/fe
 GBVERSION=$(sed -n 's/^#define GHOULBOX_VERSION "\([^"]*\)".*/\1/p' firmware/src/core.h)   # GHOULBOX: the page shows both
 mkdir -p build/emu/fonts build/emu/vendor/libflac build/emu/vendor/mp3 build/emu/licenses
 # shellcheck disable=SC2086
-emcc ${EMU_OPT:--O1} -ffp-contract=off -std=gnu99 -w ${EMU_CFLAGS:-} \
+emcc ${EMU_OPT:--O2} -ffp-contract=off -fwrapv -std=gnu99 -w ${EMU_CFLAGS:-} \
     "-DFELUCCA_VERSION=\"$VERSION\"" -Ibuild/gen -Ifirmware/src \
     --no-entry -sSTANDALONE_WASM -sSTACK_SIZE=1048576 -sINITIAL_MEMORY=33554432 -sFILESYSTEM=0 \
     -o build/emu/felucca.wasm web/emu/felucca_web.c
